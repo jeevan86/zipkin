@@ -1,11 +1,11 @@
-# collector-kafka
+# collector-kafka10
 
-## KafkaCollector
-This collector polls a Kafka 8.2.2+ topic for messages that contain
+## Kafka10Collector
+This collector polls a Kafka 0.10.2+ topic for messages that contain
 a list of spans in json or TBinaryProtocol big-endian encoding. These
 spans are pushed to a span consumer.
 
-`zipkin.collector.kafka.KafkaCollector.Builder` includes defaults that will
+`zipkin.collector.kafka.Kafka10Collector.Builder` includes defaults that will
 operate against a Kafka topic advertised in Zookeeper.
 
 ## Encoding spans into Kafka messages

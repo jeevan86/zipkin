@@ -37,6 +37,7 @@
         <!-- This is pinned to Kafka 0.8.x client as 0.9.x brokers work with them, but not visa-versa
              http://docs.confluent.io/2.0.0/upgrade.html -->
         <kafka.version>0.10.2.0</kafka.version>
+        <jedis.version>2.8.2</jedis.version>
     </properties>
 
     <dependencyManagement>
@@ -75,7 +76,6 @@
             <artifactId>zipkin</artifactId>
         </dependency>
 
-
         <!-- Static content for the web UI -->
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -104,19 +104,19 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Elasticsearch aws support -->
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>zipkin-autoconfigure-storage-elasticsearch-aws</artifactId>
-            <optional>true</optional>
-        </dependency>
+        <!--&lt;!&ndash; Elasticsearch aws support &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>${project.groupId}</groupId>-->
+        <!--<artifactId>zipkin-autoconfigure-storage-elasticsearch-aws</artifactId>-->
+        <!--<optional>true</optional>-->
+        <!--</dependency>-->
 
-        <!-- MySQL backend -->
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>zipkin-autoconfigure-storage-mysql</artifactId>
-            <optional>true</optional>
-        </dependency>
+        <!--&lt;!&ndash; MySQL backend &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>${project.groupId}</groupId>-->
+        <!--<artifactId>zipkin-autoconfigure-storage-mysql</artifactId>-->
+        <!--<optional>true</optional>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.apache.kafka</groupId>
@@ -129,12 +129,6 @@
                     <artifactId>slf4j-log4j12</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>2.8.2</version>
         </dependency>
 
         <!-- Scribe Collector -->
@@ -193,6 +187,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- redis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
+        </dependency>
+
         <!-- json -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -210,13 +211,13 @@
             <version>2.8.5</version>
         </dependency>
 
+        <!-- test -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>zipkin</artifactId>

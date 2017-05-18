@@ -30,7 +30,7 @@ public final class Kafka10Collector implements CollectorComponent {
     public static final class Builder implements CollectorComponent.Builder {
         final Map<String, Object> properties = new HashMap<>();
         ICacheUtils cache;
-        Kafka10CollectorSink.Builder delegate = Kafka10CollectorSink.builder(Kafka10Collector.class);
+        Kafka10CollectorProcessor.Builder delegate = Kafka10CollectorProcessor.builder(Kafka10Collector.class);
         CollectorMetrics metrics = CollectorMetrics.NOOP_METRICS;
         String[] topics = {"zipkin"};
         FirstPollOffsetStrategy firstPollOffsetStrategy;
@@ -151,12 +151,12 @@ public final class Kafka10Collector implements CollectorComponent {
         }
     }
 
-    private Kafka10CollectorConsumerStream streams;
+    private Kafka10CollectorConsumer streams;
 
     private Kafka10Collector(Builder builder) {
         Kafka10CollectorConfig.Builder configBuilder = new Kafka10CollectorConfig.Builder(
                 builder.properties, builder.topics, 3, builder.firstPollOffsetStrategy);
-        this.streams = new Kafka10CollectorConsumerStream(builder, configBuilder.build());
+        this.streams = new Kafka10CollectorConsumer(builder, configBuilder.build());
     }
 
     @Override

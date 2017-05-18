@@ -23,9 +23,9 @@ import static zipkin.collector.kafka.Kafka10CollectorConfig.FirstPollOffsetStrat
 /**
  * Created by huangjian on 2017/5/10.
  */
-final class Kafka10CollectorConsumerStream extends LazyCloseable<ExecutorService> {
+final class Kafka10CollectorConsumer extends LazyCloseable<ExecutorService> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Kafka10CollectorConsumerStream.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Kafka10CollectorConsumer.class);
 
     private final Kafka10CollectorConfig kafka10CollectorConfig;
 
@@ -48,10 +48,10 @@ final class Kafka10CollectorConsumerStream extends LazyCloseable<ExecutorService
 
     //    private final int streams;
     private final String[] topics;
-    private final Kafka10CollectorSink collector;
+    private final Kafka10CollectorProcessor collector;
     private final AtomicReference<Component.CheckResult> failure = new AtomicReference<>();
 
-    Kafka10CollectorConsumerStream(
+    Kafka10CollectorConsumer(
             Kafka10Collector.Builder builder,
             Kafka10CollectorConfig kafka10CollectorConfig) {
 //        this.streams = builder.streams;

@@ -20,7 +20,7 @@ import static zipkin.internal.Util.checkNotNull;
 /**
  * Created by huangjian on 2017/5/11.
  */
-final class Kafka10CollectorSink {
+final class Kafka10CollectorProcessor {
     static Builder builder(Class<?> loggingClass) {
         return new Builder(LoggerFactory.getLogger(checkNotNull(loggingClass, "loggingClass").getName()));
     }
@@ -56,8 +56,8 @@ final class Kafka10CollectorSink {
             return this;
         }
 
-        Kafka10CollectorSink build() {
-            return new Kafka10CollectorSink(this, new BusiTracesJoiner(cache));
+        Kafka10CollectorProcessor build() {
+            return new Kafka10CollectorProcessor(this, new BusiTracesJoiner(cache));
         }
     }
 
@@ -67,7 +67,7 @@ final class Kafka10CollectorSink {
     private final CollectorMetrics metrics;
     private final Kafka10CollectorBusiness business;
 
-    Kafka10CollectorSink(Builder builder, Kafka10CollectorBusiness business) {
+    Kafka10CollectorProcessor(Builder builder, Kafka10CollectorBusiness business) {
         this.logger = checkNotNull(builder.logger, "logger");
         this.storage = checkNotNull(builder.storage, "storage");
         this.sampler = builder.sampler == null ? CollectorSampler.ALWAYS_SAMPLE : builder.sampler;

@@ -33,6 +33,7 @@
     <module>zipkin-collector</module>
     <module>zipkin-autoconfigure</module>
     <module>zipkin-server</module>
+    <module>zipkin-itm</module>
   </modules>
 
   <properties>

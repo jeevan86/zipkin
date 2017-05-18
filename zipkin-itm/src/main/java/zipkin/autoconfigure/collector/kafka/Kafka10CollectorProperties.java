@@ -13,12 +13,18 @@
  */
 package zipkin.autoconfigure.collector.kafka;
 
+import com.ffcs.itm.zipkin.busi.context.ContextRedis;
+import com.ffcs.itm.zipkin.busi.storage.cache.ICacheUtils;
+import com.ffcs.itm.zipkin.busi.storage.cache.redis.RedisUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import redis.clients.jedis.HostAndPort;
 import zipkin.collector.kafka.Kafka10Collector;
 import zipkin.collector.kafka.Kafka10CollectorConfig;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static zipkin.collector.kafka.Kafka10CollectorConfig.FirstPollOffsetStrategy.UNCOMMITTED_EARLIEST;
 
@@ -26,6 +32,8 @@ import static zipkin.collector.kafka.Kafka10CollectorConfig.FirstPollOffsetStrat
 public class Kafka10CollectorProperties {
     private String topics;
     private String bootstrapServers;
+    private String redisServers;
+    private String redisAuth;
     private String groupId = "zipkin";
     private Kafka10CollectorConfig.FirstPollOffsetStrategy firstPollOffsetStrategy = UNCOMMITTED_EARLIEST;
     private int maxUncommittedOffsets = 1000;
@@ -45,6 +53,22 @@ public class Kafka10CollectorProperties {
 
     public void setBootstrapServers(String bootstrapServers) {
         this.bootstrapServers = bootstrapServers;
+    }
+
+    public String getRedisServers() {
+        return redisServers;
+    }
+
+    public void setRedisServers(String redisServers) {
+        this.redisServers = redisServers;
+    }
+
+    public String getRedisAuth() {
+        return redisAuth;
+    }
+
+    public void setRedisAuth(String redisAuth) {
+        this.redisAuth = redisAuth;
     }
 
     public String getGroupId() {
@@ -80,7 +104,32 @@ public class Kafka10CollectorProperties {
     }
 
     public Kafka10Collector.Builder toBuilder() {
-        return Kafka10Collector.builder()
+        ICacheUtils cache = null;
+        if (this.redisServers.length() > 10) {
+            String[] servers = this.redisServers.split(",");
+            ContextRedis context = new ContextRedis();
+            if (servers.length > 1) {
+                context.setMode(ContextRedis.Mode.CLUSTER);
+                Set<HostAndPort> hostAndPorts = new TreeSet<>();
+                for (String server : servers) {
+                    String[] hostAndPort = server.split(":");
+                    hostAndPorts.add(new HostAndPort(hostAndPort[0], Integer.valueOf(hostAndPort[1])));
+                }
+                context.setCluster(hostAndPorts);
+            } else {
+                context.setMode(ContextRedis.Mode.SINGLE_NODE);
+                for (String server : servers) {
+                    String[] hostAndPort = server.split(":");
+                    context.setHost(hostAndPort[0]);
+                    context.setPort(Integer.valueOf(hostAndPort[1]));
+                }
+            }
+            context.setAuth(redisAuth);
+            cache = RedisUtils.getInstance(context);
+        }
+        Kafka10Collector.Builder builder = Kafka10Collector.builder();
+        if (cache != null) builder.cache(cache);
+        return builder
                 .topics(topics)
                 .bootstrapServers(bootstrapServers)
                 .groupId(groupId)

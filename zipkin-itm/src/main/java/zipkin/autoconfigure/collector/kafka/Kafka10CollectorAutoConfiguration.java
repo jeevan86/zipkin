@@ -42,7 +42,6 @@ public class Kafka10CollectorAutoConfiguration {
                              StorageComponent storage) {
         final Kafka10Collector result =
                 kafka.toBuilder().sampler(sampler).metrics(metrics).storage(storage).build();
-
         // don't use @Bean(initMethod = "start") as it can crash the process if zookeeper is down
         Thread start = new Thread("start " + result.getClass().getSimpleName()) {
             @Override

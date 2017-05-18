@@ -113,20 +113,11 @@
     </dependency>
 
     <!-- Kafka Collector -->
-    <!--<dependency>-->
-      <!--<groupId>${project.groupId}</groupId>-->
-      <!--<artifactId>zipkin-autoconfigure-collector-kafka</artifactId>-->
-      <!--<optional>true</optional>-->
-    <!--</dependency>-->
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>zipkin-autoconfigure-collector-kafka10</artifactId>
+      <artifactId>zipkin-autoconfigure-collector-kafka</artifactId>
+      <optional>true</optional>
     </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>zipkin-collector-kafka10</artifactId>
-    </dependency>
-
 
     <!-- Scribe Collector -->
     <dependency>
